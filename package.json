@@ -1,0 +1,35 @@
+{
+  "name": "typescript-prisma-graphql",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "ISC",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"NODE_ENV=\"development\" yarn build\" \"yarn codegen:watch\" \"yarn start\"",
+    "build": "webpack --config webpack.$NODE_ENV.js",
+    "start": "node dist/server",
+    "codegen": "graphql-codegen --config codegen.yml",
+    "codegen:watch": "graphql-codegen --config codegen.yml"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "1.21.5",
+    "@graphql-codegen/introspection": "^1.18.2",
+    "@graphql-codegen/typescript": "1.22.3",
+    "@graphql-codegen/typescript-resolvers": "^1.19.4",
+    "@graphql-tools/webpack-loader": "^6.4.0",
+    "@types/graphql": "^14.5.0",
+    "@types/webpack-env": "^1.16.0",
+    "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "concurrently": "^6.2.0",
+    "ts-loader": "^9.2.3",
+    "typescript": "^4.3.4",
+    "webpack": "^5.41.1",
+    "webpack-cli": "^4.7.2",
+    "webpack-merge": "^5.8.0",
+    "webpack-node-externals": "^3.0.0"
+  },
+  "dependencies": {
+    "apollo-server": "^2.25.2",
+    "graphql": "^15.5.1"
+  }
+}
