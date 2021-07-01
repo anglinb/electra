@@ -5,11 +5,11 @@
   "license": "ISC",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"NODE_ENV=\"development\" yarn build\" \"yarn codegen:watch\" \"yarn start\"",
+    "dev": "concurrently \"NODE_ENV=\"development\" yarn build\" \"yarn codegen:watch\"",
     "build": "webpack --config webpack.$NODE_ENV.js",
     "start": "node dist/server",
     "codegen": "graphql-codegen --config codegen.yml",
-    "codegen:watch": "graphql-codegen --config codegen.yml"
+    "codegen:watch": "graphql-codegen --config codegen.yml -w"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "1.21.5",

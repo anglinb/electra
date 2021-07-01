@@ -1,3 +1,10 @@
+
+type User {
+  firstName: String!
+}
+
+
 type Query {
   hello: String!
+  viewer: User
 }

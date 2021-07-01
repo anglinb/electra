@@ -6,6 +6,8 @@ generates:
     plugins:
       - "typescript"
       - "typescript-resolvers"
+    config:
+      avoidOptionals: true
   ./graphql.schema.json:
     plugins:
       - "introspection"
