@@ -17,7 +17,8 @@ const PORT = process.env.PORT || 4000;
 
 const configureHttpServer = (httpServer: http.Server) => {
   console.info('Creating Express app');
-  const expressApp = express();
+  const expressApp = express()
+
 
   expressApp.get('/', (req: express.Request, res: express.Response) => {
     res.redirect('/graphql');
