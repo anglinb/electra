@@ -5,9 +5,10 @@
   "license": "ISC",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"NODE_ENV=\"development\" yarn build\" \"yarn codegen:watch\"",
-    "build": "webpack --config webpack.$NODE_ENV.js",
-    "start": "node dist/server",
+    "dev": "next dev",
+    "be:dev": "concurrently \"NODE_ENV=\"development\" yarn build\" \"yarn codegen:watch\"",
+    "be:build": "webpack --config webpack.$NODE_ENV.js",
+    "be:start": "node dist/server",
     "lint": "prettier --config .prettierrc 'src/**/*.graphql' 'src/**/*.ts' --check",
     "lint:fix": "prettier --config .prettierrc  'src/**/*.graphql' 'src/**/*.ts' --write",
     "codegen": "graphql-codegen --config codegen.yml",
@@ -35,8 +36,12 @@
     "webpack-node-externals": "^3.0.0"
   },
   "dependencies": {
+    "@apollo/client": "^3.3.20",
     "apollo-server": "^2.25.2",
     "graphql": "^15.5.1",
-    "prisma": "^2.26.0"
+    "next": "^11.0.1",
+    "prisma": "^2.26.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   }
 }
