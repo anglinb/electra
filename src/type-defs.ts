@@ -1,2 +1,2 @@
-import * as Schema from './graphql/schema.graphql';
-export default Schema;
+import * as Schema from './graphql/schema.graphql'
+export default Schema
