@@ -3,79 +3,82 @@ import express from 'express';
 // import console from 'chalk-console';
 import { ApolloServer } from 'apollo-server-express';
 
-
 // import { LocalStorage } from 'node-localstorage';
 import { PubSub } from 'apollo-server';
-
 
 // const localStorage = new LocalStorage('./data');
 // const pubsub = new PubSub();
 
 const typeDefs = require('./type-defs').default;
-const resolvers = require('./resolvers').default
+const resolvers = require('./resolvers').default;
 // (localStorage, pubsub);
 
-
-
-const PORT = process.env.PORT || 8081;
-
+const PORT = process.env.PORT || 4000;
 
 const configureHttpServer = (httpServer: http.Server) => {
   console.info('Creating Express app');
   const expressApp = express();
 
+  expressApp.get('/', (req: express.Request, res: express.Response) => {
+    res.redirect('/graphql');
+  });
 
   console.info('Creating Apollo server');
   const apolloServer = new ApolloServer({
     typeDefs,
-    resolvers
+    resolvers,
+    context: ({ req }: { req: express.Request }) => {
+      const user = {
+        firstName: 'Brian'
+      };
+
+      return {
+        user
+      };
+    }
   });
 
-  apolloServer.applyMiddleware({ 
-    app: expressApp 
+  apolloServer.applyMiddleware({
+    app: expressApp
   });
 
   console.info('Express app created with Apollo middleware');
 
   httpServer.on('request', expressApp);
   apolloServer.installSubscriptionHandlers(httpServer);
-}
+};
 
 // @ts-ignore
-if(!process.httpServer)
-{
+if (!process.httpServer) {
   console.info('Creating HTTP server');
 
-	// @ts-ignore
+  // @ts-ignore
   process.httpServer = http.createServer();
 
-	// @ts-ignore
+  // @ts-ignore
   configureHttpServer(process.httpServer);
 
-	// @ts-ignore
+  // @ts-ignore
   process.httpServer.listen(PORT, () => {
     console.info(`HTTP server ready at http://localhost:${PORT}`);
     console.info(`Websocket server ready at ws://localhost:${PORT}`);
   });
 } else {
   console.info('Reloading HTTP server');
-	// @ts-ignore
+  // @ts-ignore
   process.httpServer.removeAllListeners('upgrade');
-	// @ts-ignore
+  // @ts-ignore
   process.httpServer.removeAllListeners('request');
 
-	// @ts-ignore
+  // @ts-ignore
   configureHttpServer(process.httpServer);
 
   console.info('HTTP server reloaded');
 }
 
-
-
 if (module.hot) {
   module.hot.accept();
 }
-
 
 // import { gql, ServerInfo } from 'apollo-server';
 // import http from 'http';
@@ -116,8 +119,6 @@ if (module.hot) {
 // 		console.log('resp', resp)
 // 	})
 // }
-
-
 
 // boot();
 

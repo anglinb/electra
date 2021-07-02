@@ -1,0 +1,21 @@
+#!/usr/bin/env node
+
+const dotenv = require('dotenv');
+const path = require('path');
+const fs = require('fs');
+const basePath = path.join(__dirname, '..')
+
+const dotEnvPath = path.join(basePath, '.env')
+const dotEnvExamplvPath = path.join(basePath, '.env.example')
+
+const configs = dotenv.parse(fs.readFileSync(dotEnvPath).toString())
+const exampleConfigs = dotenv.parse(fs.readFileSync(dotEnvExamplvPath).toString())
+
+const configKey = Object.keys(configs);
+const missingKeys = Object.keys(exampleConfigs).filter(x => !configKey.includes(x))
+
+if (missingKeys.length > 0) {
+	fs.appendFileSync(dotEnvPath, '\n' + missingKeys.map(k => `${k}="" # Check .env.exmaple for more details`).join('\n'))
+	console.warn('Warning, you might need to fill in new keys in your .env')
+}
+

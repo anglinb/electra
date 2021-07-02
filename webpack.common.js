@@ -8,14 +8,14 @@ module.exports = {
         test: /\.ts$/,
         use: 'ts-loader'
       },
-      // {
-      //   test: /\.(graphql|gql)$/,
-      //   exclude: /node_modules/,
-      //   loader: '@graphql-tools/webpack-loader',
-      //   options: {
-      //     /* ... */
-      //   }      
-      // }
+      {
+        test: /\.(graphql|gql)$/,
+        exclude: /node_modules/,
+        loader: '@graphql-tools/webpack-loader',
+        options: {
+          /* ... */
+        }      
+      }
     ]
   },
   output: {

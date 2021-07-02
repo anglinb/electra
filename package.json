@@ -8,8 +8,17 @@
     "dev": "concurrently \"NODE_ENV=\"development\" yarn build\" \"yarn codegen:watch\"",
     "build": "webpack --config webpack.$NODE_ENV.js",
     "start": "node dist/server",
+    "lint": "prettier --config .prettierrc 'src/**/*.graphql' 'src/**/*.ts' --check",
+    "lint:fix": "prettier --config .prettierrc  'src/**/*.graphql' 'src/**/*.ts' --write",
     "codegen": "graphql-codegen --config codegen.yml",
-    "codegen:watch": "graphql-codegen --config codegen.yml -w"
+    "codegen:watch": "graphql-codegen --config codegen.yml -w",
+    "postinstall": "./.scripts/postinstall",
+    "prepare": "husky install"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint"
+    }
   },
   "devDependencies": {
     "@graphql-codegen/cli": "1.21.5",
@@ -21,6 +30,8 @@
     "@types/webpack-env": "^1.16.0",
     "clean-webpack-plugin": "^4.0.0-alpha.0",
     "concurrently": "^6.2.0",
+    "husky": "^7.0.0",
+    "prettier": "^2.3.2",
     "ts-loader": "^9.2.3",
     "typescript": "^4.3.4",
     "webpack": "^5.41.1",
@@ -30,6 +41,7 @@
   },
   "dependencies": {
     "apollo-server": "^2.25.2",
-    "graphql": "^15.5.1"
+    "graphql": "^15.5.1",
+    "prisma": "^2.26.0"
   }
 }

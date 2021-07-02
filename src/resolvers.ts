@@ -1,30 +1,31 @@
 import { Resolvers } from './generated/graphql';
 
+type Context = {
+  user?: {
+    firstName?: string;
+  };
+};
+
 export const resolverVersion = 'test';
-const resolvers: Resolvers = {
-    Query: {
-        hello: () => { 
-            return `version: ${resolverVersion} 4`
-        },
-        viewer: async () => {
-            return {
-               firstName: 'ffewfweew helfdelo few Jfewustin' 
-            }
-        }
+const resolvers: Resolvers<Context> = {
+  Query: {
+    hello: () => {
+      return `version: ${resolverVersion} 5`;
     },
-    User: {
-        firstName: async () => {
-            return 'Bfewrianfewewe fewe 1234 345 345 329045'
-        }
+    test: () => {
+      return `test`;
+    },
+    viewer: async (parent, _args, ctx, info) => {
+      return {
+        firstName: ctx.user?.firstName!
+      };
     }
-}; 
+  },
+  User: {
+    firstName: async (parent, _args, ctx, info) => {
+      return parent.firstName;
+    }
+  }
+};
 
 export default resolvers;
-// if (module.hot) {
-
-//     module.hot.accept();
-//     module.hot.dispose(() => {
-//         console.log('disposing resolvers')
-//     })
-// }
-
