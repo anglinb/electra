@@ -16,7 +16,7 @@ const Index: PageTestComp = (props) => {
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   console.log('getting server side props')
-  let result = await ssrTest.getServerPage({}, {});
+  let result = await ssrTest.getServerPage({}, { req });
   console.log('result', result)
   return result;
 };
