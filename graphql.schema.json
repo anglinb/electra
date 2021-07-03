@@ -77,7 +77,7 @@
         "description": null,
         "fields": [
           {
-            "name": "firstName",
+            "name": "name",
             "description": null,
             "args": [],
             "type": {

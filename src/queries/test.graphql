@@ -1,4 +1,4 @@
 # Write your query or mutation here
-query{
-	test
+query testQuery {
+  test
 }

@@ -15,7 +15,7 @@ const configKey = Object.keys(configs);
 const missingKeys = Object.keys(exampleConfigs).filter(x => !configKey.includes(x))
 
 if (missingKeys.length > 0) {
-	fs.appendFileSync(dotEnvPath, '\n' + missingKeys.map(k => `${k}="" # Check .env.exmaple for more details`).join('\n'))
+	fs.appendFileSync(dotEnvPath, '\n' + missingKeys.map(k => `${k}=${exampleConfigs[k]}`).join('\n'))
 	console.warn('Warning, you might need to fill in new keys in your .env')
 }
 

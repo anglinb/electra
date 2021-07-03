@@ -4,15 +4,15 @@ module.exports = {
  async rewrites() {
     return [
       {
-        source: '/api',
-        destination: `${apiHost}/`,
+        source: '/api/:path*',
+        destination: `${apiHost}/:path*`,
       },
     ]
   },
   webpack: (config) => {
     config.module.rules.push({
       test: /\.(graphql|gql)$/,
-      exclude: /node_modules/,
+      exclude: /node_modules|src\/queries/,
       loader: 'graphql-tag/loader',
     });
     return config;

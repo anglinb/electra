@@ -1,5 +1,5 @@
 type User {
-  firstName: String!
+  name: String!
 }
 
 type Query {
@@ -7,3 +7,6 @@ type Query {
   viewer: User
   test: String!
 }
+# type mutation {
+
+# }

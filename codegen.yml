@@ -1,8 +1,8 @@
 overwrite: true
 schema: "./src/graphql/schema.graphql"
-documents: null
+documents: "./src/queries/**/*.graphql"
 generates:
-  src/generated/graphql.ts:
+  src/generated/schema.ts:
     plugins:
       - "typescript"
       - "typescript-resolvers"
@@ -11,3 +11,29 @@ generates:
   ./graphql.schema.json:
     plugins:
       - "introspection"
+  src/generated/graphql.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+    config:
+      reactApolloVersion: 3
+      withHooks: false
+      withHOC: false
+      withComponent: false
+      exportFragmentSpreadSubTypes: true
+      documentMode: graphQLTag
+  src/generated/page.tsx:
+    config:
+      documentMode: external
+      importDocumentNodeExternallyFrom: ./graphql
+      reactApolloVersion: 3
+      withHooks: true
+      apolloClientInstanceImport: '../hoc/withApollo'
+      contextType: 'ApolloClientContext'
+      contextTypeRequired: true
+    preset: import-types
+    presetConfig:
+      typesPath: ./graphql
+    plugins:
+      - "@anglinb/graphql-codegen-apollo-next-ssr"
