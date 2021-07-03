@@ -5,3 +5,7 @@ node_modules/
 package-lock.json
 .next
 yarn-error.log
+public/favicon.ico
+public/icons
+.DS_Store
+

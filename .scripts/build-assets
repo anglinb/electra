@@ -1,0 +1,26 @@
+#!/usr/bin/env ts-node
+const path = require('path');
+const fs = require('fs');
+const baseDir = path.join(__dirname, '..')
+const { faviconConfigs } = require('../src/config');
+
+const sharp = require('sharp');
+const extensionOutputs = fs.existsSync(path.join(baseDir, 'extension')) ? 
+	[16 , 48, 128, 400].map(s => [s, path.join(baseDir, 'extension', 'icons', `favicon-${s}.png`)]) : [];
+
+const faviconConfig = faviconConfigs.map(x => [x.size, path.join(baseDir, 'public', 'icons', 'favicon-' + x.size + '.png')])
+
+const squareLogOutputs = [
+	...extensionOutputs,
+	...faviconConfig,
+	[32, path.join(baseDir, 'public', 'favicon.ico')],
+];
+
+Promise.all([
+	squareLogOutputs.map(([size, outputPath]) => {
+		return sharp(path.join(baseDir, 'assets', 'square-logo.png'))
+		 .resize(size, size)
+		 .toFile(outputPath)
+	})
+])
+
