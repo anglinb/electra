@@ -2,11 +2,8 @@ import { ApolloServer } from 'apollo-server-micro'
 import typeDefs from '../../server/type-defs'
 import resolvers from '../../server/resolvers'
 import cookie from 'cookie'
-// const  apolloServer  =  new  ApolloServer({
-// 	typeDefs,
-// 	resolvers
-// });
 import { Context } from '../../server/types'
+import { PrismaClient, User } from '@prisma/client'
 
 export const config = {
   api: {
@@ -14,12 +11,14 @@ export const config = {
   }
 }
 
+const prisma = new PrismaClient()
+
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
   context: async ({ req }): Promise<Context> => {
-    let authorizationToken: string | undefined = undefined
-    // Try and load it from cookies
+    let authorizationToken: string | undefined = undefined // Try and load it from cookies
+    let user: User | undefined = undefined
     if (req.headers['cookie']) {
       let cookies = cookie.parse(req.headers['cookie'])
       let sessionCookie =
@@ -43,8 +42,26 @@ const apolloServer = new ApolloServer({
     if (!authorizationToken) {
       return {}
     }
+    const session = await prisma.session.findUnique({
+      where: { sessionToken: authorizationToken }
+    })
+    if (session && session.expires < new Date()) {
+      await prisma.session.delete({
+        where: { sessionToken: authorizationToken }
+      })
+    }
+    if (session && session.expires > new Date()) {
+      user =
+        (await prisma.user.findUnique({
+          where: {
+            id: session.userId
+          }
+        })) || undefined
+    }
 
-    return {}
+    return {
+      user
+    }
   }
 })
 

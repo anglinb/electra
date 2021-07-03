@@ -54,7 +54,9 @@ export const getApolloClient = (
   ctx?: ApolloClientContext,
   initialState?: NormalizedCacheObject
 ) => {
-  const uri = `${process.env.NODE_ENV == 'development' ? 'http://' : 'https://'}${process.env.VERCEL_URL || 'localhost'}${process.env.PORT ? ':' + String(process.env.PORT) : ''}/api/graphql`
+  const onClient = typeof window !== 'undefined';
+  const host = onClient ? '' : `${process.env.NODE_ENV == 'development' ? 'http://' : 'https://'}${process.env.VERCEL_URL || 'localhost'}${process.env.PORT ? ':' + String(process.env.PORT) : ''}`
+  const uri = `${host}/api/graphql`
   // Just forward the cookie? 
   let cookie = ctx?.req.headers.cookie
   const enhancedFetch = (request: RequestInfo, init?: RequestInit) => {

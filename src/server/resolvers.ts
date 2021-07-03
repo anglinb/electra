@@ -13,16 +13,15 @@ const resolvers: Resolvers<Context> = {
     viewer: async (parent, _args, ctx, info) => {
       if (ctx.user) {
         return {
-          name: ctx.user?.name!
+          ...ctx.user
         }
       }
       return null
     }
   },
   User: {
-    name: async (parent, _args, ctx, info) => {
-      return parent.name
-    }
+    name: (parent) => parent.name,
+    image: (parent) => parent.image
   }
 }
 
