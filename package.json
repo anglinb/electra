@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "run-p codegen:watch next:dev",
     "next:dev": "next dev",
-    "build": "./.scripts/build-assets && yarn codegen && next build",
+    "build": "./.scripts/build-assets && yarn prisma generate  && yarn codegen && next build",
     "lint": "prettier --config .prettierrc 'src/**/*.graphql' 'src/**/*.ts' --check",
     "lint:fix": "prettier --config .prettierrc  'src/**/*.graphql' 'src/**/*.ts' --write",
     "codegen": "graphql-codegen --config codegen.yml",
