@@ -8,7 +8,7 @@ const resolvers: Resolvers<Context> = {
       return `version: ${resolverVersion} 9`
     },
     test: () => {
-      return `test`
+      return `test number 1`
     },
     viewer: async (parent, _args, ctx, info) => {
       if (ctx.user) {
@@ -17,6 +17,9 @@ const resolvers: Resolvers<Context> = {
         }
       }
       return null
+    },
+    drinkOfTheDay: () => {
+      return 'Mojito'
     }
   },
   User: {

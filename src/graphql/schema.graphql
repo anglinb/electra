@@ -7,6 +7,7 @@ type Query {
   hello: String!
   viewer: User
   test: String!
+  drinkOfTheDay: String!
 }
 # type mutation {
 
