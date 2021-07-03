@@ -32,6 +32,7 @@ import {
   NextApiRequestCookies,
   // @ts-ignore This path is generated at build time and conflicts otherwise
 } from 'next-server/server/api-utils';
+
 import { IncomingMessage } from "http";
 
 export type ApolloClientContext = {
@@ -54,24 +55,22 @@ export const getApolloClient = (
   initialState?: NormalizedCacheObject
 ) => {
   const uri = `${process.env.NODE_ENV == 'development' ? 'http://' : 'https://'}${process.env.VERCEL_URL || 'localhost'}${process.env.PORT ? ':' + String(process.env.PORT) : ''}/api/graphql`
-  console.log('uri', uri)
   // Just forward the cookie? 
   let cookie = ctx?.req.headers.cookie
-  // const enhancedFetch = (request: RequestInfo, init?: RequestInit) => {
-  //   return fetch(request, {
-  //     ...init, 
-  //     headers: {
-  //       ...(init?.headers || {}),
-  //       ...(cookie ? {"Cookie": cookie} : {})
-  //     },
-  //     credentials: 'same-origin'
-  //   }).then(res => res);
-  // }
+  const enhancedFetch = (request: RequestInfo, init?: RequestInit) => {
+    return fetch(request, {
+      ...init, 
+      headers: {
+        ...(init?.headers || {}),
+        ...(cookie ? {"Cookie": cookie} : {})
+      },
+      credentials: 'same-origin'
+    }).then(res => res);
+  }
 
   const httpLink = createHttpLink({
     uri,
-    fetch,
-    // fetch: enhancedFetch,
+    fetch: enhancedFetch,
   });
   const cache = new InMemoryCache().restore(initialState || {});
   return new ApolloClient({
