@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
+if (process.env.VERCEL_ENV) {
+  process.exit(0);
+};
+
 const dotenv = require('dotenv');
 const path = require('path');
 const fs = require('fs');
