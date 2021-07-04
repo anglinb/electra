@@ -1,7 +1,0 @@
-# Write your query or mutation here
-query viewerQuery {
-  viewer {
-    name
-    image
-  }
-}

@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "inlineSources": false,
+    "sourceMap": false,
+    "outDir": "dist"
+  },
+  "include": ["src/**/*"]
+}

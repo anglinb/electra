@@ -1,6 +1,11 @@
 export const productName = 'Electra'
 export const productTagline =
   'Electra is the best starting framework for the modern stack.'
+export const productCTA = `Checkout out Electra
+It's the fastest way to build SaaS applications`
+export const productCTASubtext = `It's super easy to get started!`
+export const docsLink = '/docs'
+export const supportLink = '/support'
 
 const icons = [
   { size: 32 },

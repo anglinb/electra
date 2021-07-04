@@ -1,14 +1,60 @@
+enum TEAM_TYPE {
+  PERSONAL
+  BUSINESS
+}
+
+type Team {
+  id: String!
+  name: String!
+  slug: String!
+  image: String
+  teamType: TEAM_TYPE!
+  role: TeamUserRole
+  roles(roles: [ROLE_TYPE!]): [TeamUserRole!]!
+}
+
+type TeamUserRole {
+  user: User!
+  team: Team!
+  role: ROLE_TYPE
+}
+
+enum ROLE_TYPE {
+  OWNER
+  MEMBER
+}
+
 type User {
+  id: String!
   name: String
   image: String
+  teams(roles: [ROLE_TYPE!]): [Team!]!
+  roles(roles: [ROLE_TYPE!]): [TeamUserRole!]!
+}
+
+type TeamNameAvailability {
+  available: Boolean!
 }
 
 type Query {
-  hello: String!
   viewer: User
-  test: String!
   drinkOfTheDay: String!
+  teamNameAvailable(teamName: String!): TeamNameAvailability!
 }
-# type mutation {
 
-# }
+input CreateTeamInput {
+  teamName: String!
+}
+
+input DeleteTeamInput {
+  teamId: String!
+}
+
+type DeleteResult {
+  deleted: Boolean
+}
+
+type Mutation {
+  createTeam(input: CreateTeamInput): Team
+  deleteTeam(input: DeleteTeamInput): DeleteResult
+}

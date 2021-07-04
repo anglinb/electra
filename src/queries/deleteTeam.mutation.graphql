@@ -1,0 +1,5 @@
+mutation deleteTeamMutation($teamId: String!) {
+  deleteTeam(input: { teamId: $teamId }) {
+    deleted
+  }
+}

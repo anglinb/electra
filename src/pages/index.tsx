@@ -1,45 +1,35 @@
 import { GetServerSideProps } from 'next';
 
-// import { useViewer, useDrinkOfTheDay } from '../generated/page';
-import { PageTestComp, ssrTest } from "../generated/page";
 import { withApollo } from "../hoc/withApollo";
 import Head from 'next/head';
 import Favicon from '../components/Favicon';
 
+import Splash from '../components/splash/SplashIndex';
+import Projects from '../components/dashboard/Projects';
+import { getSession, useSession } from 'next-auth/client';
 
+const Index = () => {
 
-const Index: PageTestComp = (props) => {
+  const [ session, loading ] = useSession()
 
-  // const { data: drink } = useDrinkOfTheDay();
-  // const { data, loading, error } = useViewer();
-  console.log('data from props',  props)
+  if (typeof window !== 'undefined' && loading) return null
+
   return (
     <>
     <Head>
       <Favicon />
     </Head>
-    <h1>Hello World</h1>
-    <p>Test: { props.data?.test }</p>
-    <h2>User</h2>
-    {/* { 
-      loading ? 'Loading ...' : undefined
-    } */}
-    {
-        props.data?.viewer ? props.data.viewer?.name : 'Not logged in'
-    }
-    { 
-    props.data?.drinkOfTheDay ? props.data.drinkOfTheDay : "loading" 
-    }
-    </>
+    { session ?  <Projects /> : <Splash /> }
+   </>
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  console.log('getting server side props')
-  let result = await ssrTest.getServerPage({}, { req });
-  console.log('result', result)
-  return result;
-};
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const session = await getSession(ctx)
+  return {
+    props: { session }
+  }
+}
 
 export default withApollo(Index);
 

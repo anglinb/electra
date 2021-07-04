@@ -1,0 +1,8 @@
+query dashboard {
+  viewer {
+    id
+    teams {
+      ...TeamFields
+    }
+  }
+}

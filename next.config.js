@@ -9,12 +9,16 @@ module.exports = {
 //       },
 //     ]
 //   },
-  webpack: (config) => {
+  webpack: (config, { isServer }) => {
     config.module.rules.push({
       test: /\.(graphql|gql)$/,
       exclude: /node_modules|src\/queries/,
       loader: 'graphql-tag/loader',
     });
+    if (!isServer) {
+      //config.resolve.fallback.fs = false;
+
+    }
     return config;
   },
   webpackDevMiddleware: (config) => {

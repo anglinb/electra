@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e
+
+cd "$(dirname "$0")/.."
+
+# Clean
+rm -rf build/
+
+# Build extension scripts
+yarn build:dist
+
+# Copy files & update manifest
+node ./scripts/post-build.js

@@ -10,6 +10,7 @@ const baseDir = path.join(__dirname, '..')
 const { faviconConfigs } = require('../src/config');
 
 const sharp = require('sharp');
+const { map } = require('lodash');
 const extensionOutputs = fs.existsSync(path.join(baseDir, 'extension')) ? 
 	[16 , 48, 128, 400].map(s => [s, path.join(baseDir, 'extension', 'icons', `favicon-${s}.png`)]) : [];
 
@@ -19,11 +20,18 @@ const squareLogOutputs = [
 	...extensionOutputs,
 	...faviconConfig,
 	[32, path.join(baseDir, 'public', 'favicon.ico')],
-];
+].map(([size, outputPath]) => [size, outputPath, path.join(baseDir, 'assets', 'square-logo.png')] )
+
+
 
 Promise.all([
-	squareLogOutputs.map(([size, outputPath]) => {
-		return sharp(path.join(baseDir, 'assets', 'square-logo.png'))
+	[
+		...squareLogOutputs,
+		...squareLogOutputs.map(([size, outputPath, destination]) => {
+			return [size, outputPath.replace('.png', '-dark.png'), destination.replace('.png', '-dark.png')]
+		})
+	].map(([size, outputPath, sourcePath]) => {
+		return sharp(sourcePath)
 		 .resize(size, size)
 		 .toFile(outputPath)
 	})

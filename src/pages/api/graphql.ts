@@ -11,7 +11,7 @@ export const config = {
   }
 }
 
-const prisma = new PrismaClient()
+import prisma from '../../server/prisma'
 
 const apolloServer = new ApolloServer({
   typeDefs,
@@ -40,7 +40,9 @@ const apolloServer = new ApolloServer({
 
     // Actually look up the authorization token
     if (!authorizationToken) {
-      return {}
+      return {
+        prisma
+      }
     }
     const session = await prisma.session.findUnique({
       where: { sessionToken: authorizationToken }
@@ -60,12 +62,21 @@ const apolloServer = new ApolloServer({
     }
 
     return {
+      prisma,
       user
     }
-  }
+  },
+  playground: {
+    settings: {
+      'request.credentials': 'same-origin'
+    }
+  },
+  tracing: true
 })
 
-let handler = apolloServer.createHandler({ path: '/api/graphql' })
+let handler = apolloServer.createHandler({
+  path: '/api/graphql'
+})
 
 export default async function (...args: any) {
   // @ts-ignore

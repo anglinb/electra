@@ -7,7 +7,32 @@ generates:
       - "typescript"
       - "typescript-resolvers"
     config:
+      # avoidOptionals: true
+      # maybeValue: 'T extends PromiseLike<infer U> ? Promise<U | null> : T | null'
+      maybeValue: 'T | null | undefined'
+      skipTypename: true
+      useIndexSignature: true
+      nonOptionalTypename: true
       avoidOptionals: true
+      noSchemaStitching: true
+      
+      # resolverTypeWrapperSignature: |
+      #   Promisable<T extends { __typename: string } ? { [K in keyof T]: DeepLazy<T[K]> } : T>;
+      #   export type DeepLazy<T> = T extends { __typename: string } | Array<{ __typename: string }>
+      #     ? { [K in keyof T]: DeepLazy<T[K]> } | undefined
+      #     : T extends Scalars[keyof Scalars]
+      #     ? T
+      #     : T extends { [K in string | number]: any }
+      #     ? { [K in keyof T]: DeepLazy<T[K]> }
+      #     : T;
+      #   export type Promisable<T> = Promise<T> | T
+      # customResolverFn: |
+      #   (parent: UnwrapPromise<ResolverTypeWrapper<TParent>>, args: TArgs, context: TContext, info: GraphQLResolveInfo) => Promisable<TResult>;
+      #   export type UnwrapPromise<T> = T extends Promise<infer U> ? U : T
+      mappers:
+        User: "@prisma/client#User as UserRecord"
+        TeamUserRole: "@prisma/client#TeamUserRole as TeamUserRoleRecord"
+        Team: "@prisma/client#Team as TeamRecord"
   ./graphql.schema.json:
     plugins:
       - "introspection"

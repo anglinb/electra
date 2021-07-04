@@ -1,0 +1,10 @@
+fragment TeamFields on Team {
+  id
+  name
+  image
+  slug
+  teamType
+  role {
+    role
+  }
+}

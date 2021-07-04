@@ -1,0 +1,61 @@
+{
+   "background": {
+      "scripts": ["background.js"],
+      "persistent": false
+    },
+   "commands": {
+      "_execute_browser_action": {
+         "description": "Open App monitor for the current tab",
+         "suggested_key": {
+            "default": "Ctrl+Shift+S",
+            "mac": "Command+Shift+S"
+         }
+      }
+    },
+   "browser_action": {
+      "default_icon": {
+         "128": "icons/favicon-128.png",
+         "16": "icons/favicon-16.png",
+         "48": "icons/favicon-48.png"
+      },
+      "default_title": "StaffBar" 
+    },
+    "content_scripts": [
+      {
+         "matches": ["http://*/*", "https://*/*"],
+         "js": ["content-script.js"],
+         "run_at":"document_start"
+      },
+      {
+         "matches": ["http://*/*", "https://*/*"],
+         "js": ["activate-staffbar.js"],
+         "run_at":"document_idle"
+      }
+   ],
+   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+   "description": "You heads up dispaly for debugging and manually testing your web app.",
+   "icons": {
+      "128": "icons/favicon-128.png",
+      "16": "icons/favicon-16.png",
+      "48": "icons/favicon-48.png"
+   },
+   "manifest_version": 2,
+   "minimum_chrome_version": "87",
+   "name": "StaffBar",
+   "permissions": [ 
+      "*://*/*"
+   ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "0.0.5",
+   "web_accessible_resources": [ 
+      "indext.html",
+      "activate-staffbar.js",
+      "activate-staffbar.map.js",
+      "entrypoint.js",
+      "entrypoint.map.js",
+      "background.map.js",
+      "complete.js",
+      "complete.map.js",
+      "content-script.map.js"
+   ]
+}

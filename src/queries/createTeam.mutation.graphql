@@ -1,0 +1,7 @@
+mutation createTeamMutation($teamName: String!) {
+  createTeam(input: { teamName: $teamName }) {
+    id
+    slug
+    name
+  }
+}
