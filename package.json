@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "dev": "run-p codegen:watch next:dev",
-    "next:dev": "next dev",
+    "next:dev": "source .env && next dev -p $PORT ",
     "build": "./.scripts/build-assets && yarn prisma generate  && yarn codegen && next build",
     "lint": "prettier --config .prettierrc 'src/**/*.graphql' 'src/**/*.ts' --check",
     "lint:fix": "prettier --config .prettierrc  'src/**/*.graphql' 'src/**/*.ts' --write",
