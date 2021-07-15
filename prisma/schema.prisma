@@ -38,13 +38,13 @@ model Session {
 }
 
 model User {
-  id            String     @id @default(cuid())
+  id            String         @id @default(cuid())
   name          String?
-  email         String?    @unique
+  email         String?        @unique
   emailVerified DateTime?
   image         String?
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
   accounts      Account[]
   sessions      Session[]
   teams         Team[]
@@ -68,17 +68,17 @@ enum TeamType {
 }
 
 model Team {
-  id           String     @id @default(cuid())
+  id           String         @id @default(cuid())
   name         String
   teamType     TeamType
   projects     Project[]
   users        TeamUserRole[]
   image        String?
   slug         String
-  personalUser User?      @relation(fields: [userId], references: [id])
+  personalUser User?          @relation(fields: [userId], references: [id])
 
-  @@unique([slug], name: "Team_slug_unique")
   userId String?
+  @@unique([slug], name: "Team_slug_unique")
 }
 
 enum RoleType {
@@ -87,23 +87,185 @@ enum RoleType {
 }
 
 model TeamUserRole {
-  id     String @id @default(cuid())
+  id     String   @id @default(cuid())
   userId String
-  user   User   @relation(fields: [userId], references: [id])
+  user   User     @relation(fields: [userId], references: [id])
   teamId String
-  team   Team   @relation(fields: [teamId], references: [id])
-  role  RoleType @default(MEMBER)
+  team   Team     @relation(fields: [teamId], references: [id])
+  role   RoleType @default(MEMBER)
 }
 
 model Project {
-  id     String @id @default(cuid())
-  teamId String
-  team   Team   @relation(fields: [teamId], references: [id])
-  name   String
-  slug   String
-  // environments            ProjectEnvironment[]
-  // authKeys                ProjectAuthKey[]
-  // apiKeys                 ProjectAPIKey[]
+  id       String    @id @default(cuid())
+  teamId   String
+  team     Team      @relation(fields: [teamId], references: [id])
+  name     String
+  slug     String
+  abtests  ABTest[]
+  paywalls Paywall[]
+  prices   Price[]
+  events   Event[]
+  journies Journey[]
 
   @@unique([slug, teamId], name: "Project_Team_slug_unique")
+}
+
+model Paywall {
+  id                  String               @id @default(cuid())
+  active              Boolean
+  projectId           String
+  project             Project              @relation(fields: [projectId], references: [id])
+  sections            Section[]
+  name                String
+  slug                String
+  dismissable         Boolean
+  impressionCount     BigInt
+  conversionCount     BigInt
+  journeyPaywallItems JourneyPaywallItem[]
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+
+  @@unique([slug, projectId], name: "Paywall_Project_slug_unique")
+}
+
+model Section {
+  id        String   @id @default(cuid())
+  type      String
+  paywallId String
+  paywall   Paywall  @relation(fields: [paywallId], references: [id])
+  height    Int
+  name      String
+  html      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Duration {
+  WEEKLY
+  MONTHLY
+  ANNUALLY
+  LIFETIME
+  DAILY
+}
+
+model Price {
+  id                String   @id @default(cuid())
+  projectId         String
+  project           Project  @relation(fields: [projectId], references: [id])
+  cost              Float
+  isDiscounted      Boolean
+  percentDiscounted Int
+  duration          Duration
+  impressionCount   BigInt
+  conversionCount   BigInt
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+
+  @@unique([projectId, cost, isDiscounted, percentDiscounted, duration])
+}
+
+model Event {
+  id                String             @id @default(cuid())
+  projectId         String
+  project           Project            @relation(fields: [projectId], references: [id])
+  journeyEventItems JourneyEventItem[]
+  eventName         String
+  createdAt         DateTime           @default(now())
+  firstSeenDate     DateTime           @default(now())
+  lastSeenDate      DateTime           @updatedAt
+  firedCount        BigInt
+
+  @@unique([projectId, eventName])
+}
+
+model Journey {
+  id                  String               @id @default(cuid())
+  name                String
+  slug                String
+  variants            Variant[]
+  default             Boolean              @default(false)
+  journeyEventItems   JourneyEventItem[]
+  journeyPaywallItems JourneyPaywallItem[]
+  projectId           String
+  project             Project              @relation(fields: [projectId], references: [id])
+  userCount           BigInt
+  userCountActive     BigInt
+  conversionCount     BigInt
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+}
+
+enum JourneyItemType {
+  EVENT
+  PAYWALL
+}
+
+enum EventSeenType {
+  ORDINAL
+  SINCEINSTALL
+}
+
+model JourneyEventItem {
+  id                   String          @id @default(cuid())
+  journeyOrder         Int
+  journeyId            String
+  journey              Journey         @relation(fields: [journeyId], references: [id])
+  journeyItemtype      JourneyItemType
+  journeyItemEventType EventSeenType
+  eventId              String
+  event                Event           @relation(fields: [eventId], references: [id])
+  firedCount           BigInt
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+}
+
+model JourneyPaywallItem {
+  id                   String          @id @default(cuid())
+  journeyOrder         Int
+  journeyId            String
+  journey              Journey         @relation(fields: [journeyId], references: [id])
+  journeyItemtype      JourneyItemType
+  journeyItemEventType EventSeenType
+  paywallId            String
+  Paywall              Paywall         @relation(fields: [paywallId], references: [id])
+  impressionCount      BigInt
+  conversionCount      BigInt
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+}
+
+model ABTest {
+  id                                  String    @id @default(cuid())
+  name                                String
+  slug                                String
+  projectId                           String
+  project                             Project   @relation(fields: [projectId], references: [id])
+  variants                            Variant[]
+  percentTotalTraffic                 Float
+  active                              Boolean
+  createdAt                           DateTime  @default(now())
+  updatedAt                           DateTime  @updatedAt
+  becomeActiveDate                    DateTime
+  becomeInactiveActiveDate            DateTime
+  userCount                           BigInt
+  userCountActive                     BigInt
+  conversionCount                     BigInt
+  convertWinningVariantDefaultJourney Boolean
+  atStatSig                           Boolean
+}
+
+model Variant {
+  id                   String   @id @default(cuid())
+  percentABTestTraffic Float
+  journeyId            String
+  journey              Journey  @relation(fields: [journeyId], references: [id])
+  abTestId             String
+  abTest               ABTest   @relation(fields: [abTestId], references: [id])
+  userCount            BigInt
+  userCountActive      BigInt
+  conversionCount      BigInt
+  isWinner             Boolean
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
 }

@@ -1,7 +1,7 @@
 {
   "name": "typescript-prisma-graphql",
   "version": "1.0.0",
-  "description": "hello 3",
+  "description": "superwall is a remote paywall generator",
   "main": "index.js",
   "license": "ISC",
   "private": true,
