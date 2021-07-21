@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ -n "$GITPOD_WORKSPACE_ID" ]; then
+    psql -c "CREATE USER postgres;" >/dev/null 2>&1
+    psql -c "CREATE DATABASE electra;" >/dev/null 2>&1
+    psql -c "GRANT ALL ON electra TO postgres;" >/dev/null 2>&1
+    exit 0
+else 
+    echo "Please ensure you have a database created"
+fi
+

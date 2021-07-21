@@ -100,8 +100,8 @@ const CustomPrismaAdapter = (prisma: PrismaClient) => {
         // Create a default team
         let personalTeam: Team | undefined
         const options = [
-          toSlug(profile),
-          `${toSlug}-${((Math.random() * 0xffffff) << 0)
+          toSlug(profile.name),
+          `${toSlug(profile.name)}-${((Math.random() * 0xffffff) << 0)
             .toString(16)
             .padStart(6, '0')}`
         ]

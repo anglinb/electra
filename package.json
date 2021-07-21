@@ -7,13 +7,16 @@
   "private": true,
   "scripts": {
     "dev": "run-p codegen:watch next:dev",
+    "db:setup": "yarn prisma db push",
     "next:dev": "PORT=\"${PORT:-4040}\" && next dev -p $PORT",
     "build": "./.scripts/build-assets && yarn prisma generate  && yarn codegen && next build",
     "lint": "prettier --config .prettierrc 'src/**/*.graphql' 'src/**/*.ts' --check",
     "lint:fix": "prettier --config .prettierrc  'src/**/*.graphql' 'src/**/*.ts' --write",
     "codegen": "graphql-codegen --config codegen.yml",
     "codegen:watch": "graphql-codegen --config codegen.yml -w",
-    "postinstall": "./.scripts/postinstall",
+    "postinstall": "run-s postinstall:database postinstall:assets",
+    "postinstall:database": "./.scripts/postinstall-database",
+    "postinstall:assets": "./.scripts/postinstall-dotenv",
     "prepare": "husky install"
   },
   "devDependencies": {

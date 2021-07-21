@@ -1,1 +1,5 @@
-dist
+dist/
+build/
+node_modules/
+.next/
+src/generated/
