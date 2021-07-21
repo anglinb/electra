@@ -6,6 +6,8 @@ Electra is a boilerplate application for building SaaS developer tools. It has a
 
 ### Quickstart
 
+***Easiest:** [Open Electra on GitPod.io](gitpod.io/#https://github.com/anglinb/electra)*
+
 #### Install
 ```
 git clone https://github.com/anglinb/electra && cd electra
@@ -16,8 +18,8 @@ yarn
 
 *Note: You'll need some GitHub credentials to get started. Edit you .env to with GitHub App Credential*
 
+```
 yarn dev
-
 ```
 
 ### Workflow
