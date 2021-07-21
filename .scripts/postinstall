@@ -12,6 +12,10 @@ const basePath = path.join(__dirname, '..')
 const dotEnvPath = path.join(basePath, '.env')
 const dotEnvExamplvPath = path.join(basePath, '.env.example')
 
+if (!fs.existsSync(dotEnvPath)){
+	fs.writeFileSync(dotEnvPath, '')
+}
+
 const configs = dotenv.parse(fs.readFileSync(dotEnvPath).toString())
 const exampleConfigs = dotenv.parse(fs.readFileSync(dotEnvExamplvPath).toString())
 

@@ -1,0 +1,8 @@
+tasks:
+  - name: dev
+    command: yarn dev
+    openMode: split-right
+  - init: yarn install
+    command: pg_start && yarn dev
+ports:
+- port: 4040
