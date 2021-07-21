@@ -6,7 +6,7 @@ Electra is a boilerplate application for building SaaS developer tools. It has a
 
 ### Quickstart
 
-***Easiest:** [Open Electra on GitPod.io 🚀](gitpod.io/#https://github.com/anglinb/electra)*
+***Easiest:** [Open Electra on GitPod.io 🚀](https://gitpod.io/#https://github.com/anglinb/electra)*
 
 #### Install
 ```
