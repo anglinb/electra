@@ -24,7 +24,16 @@ yarn dev
 
 ### Workflow
 
-I usually start by thinking about data I will need. From there, I'll create changes in the GraphQL schema to expose that data or expose mutations. Next, I'll implement the appropriate resolver. Once I've done so, I'll manually test it in the GraphQL playground at `/api/graphql`. Then I'll go copy my query from the playground to `src/queries`. Once it's there, `graphql-codegen` generates the hooks and I'm good to go!
+Here is the workflow I follow to develop features:
+
+- 1. Consider the data I need for a new feature
+- 2. Create the schema in GraphQL `scr/graphql/schema.graphql`
+- 3. Create [a Prsma database migration](https://www.prisma.io/docs/concepts/components/prisma-migrate) from editing the database schema `prisma/schema.prisma` 
+- 4. (If I've added a new table) Update the [`codegen.yml`](https://github.com/anglinb/electra/blob/853a9e703ec26799657dd9ad50a451433f72aad6/codegen.yml#L32) to include the new tables.
+- 5. Update my resolvers `src/server/resolvers`
+- 6. Test at `http://localhost:4040/api/graphql`
+- 7. Update my front end next app
+- 8. Celebrate 🍻 
 
 ### Design
 

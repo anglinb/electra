@@ -11,6 +11,7 @@ type Team {
   teamType: TEAM_TYPE!
   role: TeamUserRole
   roles(roles: [ROLE_TYPE!]): [TeamUserRole!]!
+  projects: [Project]!
 }
 
 type TeamUserRole {
@@ -50,6 +51,22 @@ input DeleteTeamInput {
   teamId: String!
 }
 
+type Project {
+  id: ID!
+  name: String!
+  slug: String!
+  team: Team!
+}
+
+input CreateProjectInput {
+  teamId: ID!
+  projectName: String!
+}
+
+input DeleteProjectInput {
+  projectId: ID!
+}
+
 type DeleteResult {
   deleted: Boolean
 }
@@ -57,4 +74,6 @@ type DeleteResult {
 type Mutation {
   createTeam(input: CreateTeamInput): Team
   deleteTeam(input: DeleteTeamInput): DeleteResult
+  createProject(input: CreateProjectInput!): Project
+  deleteProject(input: DeleteProjectInput!): DeleteResult
 }
