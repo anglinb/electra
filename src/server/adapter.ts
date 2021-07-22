@@ -30,54 +30,18 @@ export const getStaticOptions = () => {
   return staticOptions
 }
 
-// const CustomPrismaAdapter = PrismaAdapter
-// const CustomPrismaAdapter =  (prisma: PrismaClient) => {
-//   let originalAdpaterBuilder = PrismaAdapter(prisma);
-
-//   return {
-//     async getAdapter({ session, secret, ...appOptions }: { session: any, secret: string }) {
-//       // @ts-ignore
-//       let originalAdapter = await originalAdpaterBuilder.getAdapter({ session, secret, ...appOptions })
-
-//       // const createUser = async (profile: any) => {
-//       //   // Create a default team
-//       //   let personalTeam = await prisma.team.create({
-//       //     data:{
-//       //       name: profile.name,
-//       //       teamType: TeamType.PERSONAL,
-//       //     }
-//       //   })
-
-//       //   let { id, ...restOfProfile } = profile;
-//       //   return prisma.user.create({
-//       //     data: {
-//       //       name: profile.name,
-//       //       email: profile.email,
-//       //       image: profile.image,
-//       //       emailVerified: profile.emailVerified?.toISOString() ?? null,
-//       //       ...restOfProfile,
-//       //       personalTeamId: personalTeam.id,
-//       //     },
-//       //   })
-//       // };
-// 			const  getUserByProviderAccountId = async (providerId: string, providerAccountId: string)  => {
-
-// 			}
-
-//       let returning = {
-//         ...originalAdapter,
-// 				getUserByProviderAccountId,
-//       };
-//       return returning
-//     }
-//   }
-// }
-
 export const buildAdapter = async (prisma: PrismaClient) => {
   return CustomPrismaAdapter(prisma).getAdapter(getStaticOptions())
 }
 
-// const CustomPrismaAdapter = PrismaAdapter
+/**
+ * This adapter automatically creates a team for every new User when they are created
+ *
+ *
+ * @param prisma PrismaClient instnace
+ * @returns PrismaAdapter
+ */
+
 const CustomPrismaAdapter = (prisma: PrismaClient) => {
   let originalAdpaterBuilder = PrismaAdapter(prisma)
 
@@ -141,20 +105,6 @@ const CustomPrismaAdapter = (prisma: PrismaClient) => {
           }
         })
       }
-
-      //  const getSession = async (sessionToken: string) => {
-      //     if (!sessionToken) {
-      //       return null;
-      //     };
-      //     const session = await prisma.session.findUnique({
-      //         where: { sessionToken },
-      //     });
-      //     if (session && session.expires < new Date()) {
-      //         await prisma.session.delete({ where: { sessionToken } });
-      //         return null;
-      //     }
-      //     return session;
-      // 	}
 
       let returning = {
         ...originalAdapter,
